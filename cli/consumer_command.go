@@ -952,10 +952,11 @@ func (c *consumerCmd) cpAction(pc *fisk.ParseContext) (err error) {
 	return nil
 }
 
-func (c *consumerCmd) loadConfigFile(file string) (*api.ConsumerConfig, error) {
+func (c *consumerCmd) loadConfigFile(file string) (*api.ConsumerConfig, string, error) {
+	var stream string
 	f, err := os.ReadFile(file)
 	if err != nil {
-		return nil, err
+		return nil, stream, err
 	}
 
 	var cfg api.ConsumerConfig
@@ -968,7 +969,7 @@ func (c *consumerCmd) loadConfigFile(file string) (*api.ConsumerConfig, error) {
 	var nfo map[string]any
 	err = json.Unmarshal(f, &nfo)
 	if err != nil {
-		return nil, err
+		return nil, stream, err
 	}
 
 	_, ok := nfo["config"]
@@ -976,27 +977,37 @@ func (c *consumerCmd) loadConfigFile(file string) (*api.ConsumerConfig, error) {
 		var nfo api.ConsumerInfo
 		err = json.Unmarshal(f, &nfo)
 		if err != nil {
-			return nil, err
+			return nil, stream, err
 		}
 		cfg = nfo.Config
 	} else {
 		err = json.Unmarshal(f, &cfg)
 		if err != nil {
-			return nil, err
+			return nil, stream, err
 		}
 	}
 
-	return &cfg, nil
+	val, ok := nfo["stream_name"]
+	if ok {
+		stream, _ = val.(string);
+	}
+
+	return &cfg, stream, nil
 }
 
 func (c *consumerCmd) prepareConfig(pc *fisk.ParseContext) (cfg *api.ConsumerConfig, err error) {
+	var stream string
 	cfg = c.defaultConsumer()
 	cfg.Description = c.description
 
 	if c.inputFile != "" {
-		cfg, err = c.loadConfigFile(c.inputFile)
+		cfg, stream, err = c.loadConfigFile(c.inputFile)
 		if err != nil {
 			return nil, err
+		}
+
+		if stream != "" && c.stream == "" {
+			c.stream = stream
 		}
 
 		if cfg.Durable != "" && c.consumer != "" && cfg.Durable != c.consumer {
