@@ -1,6 +1,8 @@
 module github.com/nats-io/natscli
 
-go 1.21
+go 1.21.0
+
+toolchain go1.21.13
 
 require (
 	github.com/AlecAivazis/survey/v2 v2.3.7
@@ -29,9 +31,9 @@ require (
 	github.com/prometheus/common v0.55.0
 	github.com/santhosh-tekuri/jsonschema/v5 v5.3.1
 	github.com/tylertreat/hdrhistogram-writer v0.0.0-20210816161836-2e440612a39f
-	golang.org/x/crypto v0.25.0
+	golang.org/x/crypto v0.27.0
 	golang.org/x/exp v0.0.0-20240719175910-8a7402abbf56
-	golang.org/x/term v0.22.0
+	golang.org/x/term v0.24.0
 	gopkg.in/yaml.v3 v3.0.1
 )
 
@@ -48,9 +50,13 @@ require (
 	github.com/prometheus/procfs v0.15.1 // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
 	golang.org/x/net v0.27.0 // indirect
-	golang.org/x/sys v0.22.0 // indirect
-	golang.org/x/text v0.16.0 // indirect
-	golang.org/x/time v0.5.0 // indirect
+	golang.org/x/sys v0.25.0 // indirect
+	golang.org/x/text v0.18.0 // indirect
+	golang.org/x/time v0.6.0 // indirect
 	google.golang.org/protobuf v1.34.2 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
+
+replace github.com/nats-io/jsm.go => github.com/diorcety/jsm.go v0.1.3-0.20240926144904-80e3c7361679
+
+replace github.com/nats-io/nats-server/v2 => github.com/diorcety/nats-server/v2 v2.0.0-20240926143622-cf9f2e51b94c

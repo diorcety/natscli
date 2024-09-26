@@ -1898,6 +1898,10 @@ func (c *streamCmd) renderSource(s *api.StreamSource) string {
 		parts = append(parts, fmt.Sprintf("Start Time: %v", s.OptStartTime))
 	}
 
+	if s.FilterTime != nil {
+		parts = append(parts, fmt.Sprintf("Filter Time: %v", s.FilterTime))
+	}
+
 	if s.External != nil {
 		if s.External.ApiPrefix != "" {
 			parts = append(parts, fmt.Sprintf("API Prefix: %s", s.External.ApiPrefix))
